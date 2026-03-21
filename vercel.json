@@ -1,12 +1,20 @@
 {
-  "functions": ["api/**/*.ts"],
-  "build": {
-    "env": {
-      "VITE_SANITY_PROJECT_ID": "@sanity_project_id",
-      "VITE_SANITY_DATASET": "@sanity_dataset",
-      "VITE_SANITY_API_VERSION": "@sanity_api_version",
-      "VITE_SUPABASE_URL": "@supabase_url",
-      "VITE_SUPABASE_ANON_KEY": "@supabase_anon_key"
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "functions": {
+    "api/booking.ts": {
+      "runtime": "@vercel/node@20.19.4"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
