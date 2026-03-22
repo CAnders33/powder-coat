@@ -18,7 +18,7 @@
     "@mui/x-date-pickers": "^6.18.6",
     "@sanity/client": "^6.10.0",
     "@sanity/image-url": "^1.0.2",
-    "@supabase/supabase-js": "^2.38.5",
+    "@supabase/supabase-js": "^2.99.3",
     "date-fns": "^2.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

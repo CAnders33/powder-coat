@@ -38,3 +38,7 @@ lerna-debug.log*
 # Sanity
 sanity-studio/.sanity
 .env*.local
+
+.claude
+.agents
+.sql
