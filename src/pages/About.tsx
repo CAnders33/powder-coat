@@ -1,190 +1,176 @@
-import React from 'react';
-import { useAboutPage } from '@/hooks/useAboutPage';
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+} from '@mui/material';
 import HeroSection from '@/components/about/HeroSection';
 import FeatureCard from '@/components/about/FeatureCard';
 import TestimonialCard from '@/components/about/TestimonialCard';
 import CTASection from '@/components/about/CTASection';
 
+// Static data for the About page
+const aboutPageData = {
+  title: 'About Our Company',
+  heroImage: {
+    url: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&h=600&fit=crop',
+    alt: 'Powder coating facility'
+  },
+  companyDescription: `Founded in 2008, our powder coating business started with a simple mission: to provide 
+  the highest quality metal finishing services in the region. What began as a small family operation has grown 
+  into a trusted partner for automotive enthusiasts, industrial manufacturers, and homeowners alike. We are 
+  passionate about transforming metal surfaces with durable, beautiful finishes that exceed our customers' 
+  expectations while maintaining the highest standards of quality, environmental responsibility, and customer service.`,
+  
+  whyChooseUs: [
+    {
+      title: 'Expert Craftsmanship',
+      description: 'Over 15 years of professional powder coating experience with meticulous attention to detail',
+      icon: 'build'
+    },
+    {
+      title: 'Fast Turnaround',
+      description: 'Quick project completion without compromising on quality - most jobs completed within 3-5 days',
+      icon: 'speed'
+    },
+    {
+      title: 'Quality Guarantee',
+      description: '100% satisfaction guaranteed on all our work with comprehensive warranty coverage',
+      icon: 'security'
+    },
+    {
+      title: 'Eco-Friendly Process',
+      description: 'Environmentally responsible coating processes with zero harmful emissions',
+      icon: 'nature'
+    }
+  ],
+
+  testimonials: [
+    {
+      name: 'John Smith',
+      company: 'Smith Auto Restoration',
+      rating: 5,
+      comment: 'Outstanding work! They powder coated my classic car parts and the finish is absolutely perfect. The attention to detail and customer service exceeded my expectations.',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
+    },
+    {
+      name: 'Sarah Martinez',
+      company: 'Industrial Solutions Inc.',
+      rating: 5,
+      comment: 'We have been using their services for our industrial equipment for years. Consistently high quality, fast turnaround, and competitive pricing. Highly recommended!',
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face'
+    },
+    {
+      name: 'Mike Johnson',
+      company: 'Custom Fabrication',
+      rating: 5,
+      comment: 'Professional service from start to finish. They handled our complex project with expertise and delivered exactly what we needed on time and within budget.',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
+    }
+  ],
+
+  callToAction: {
+    title: 'Ready to Transform Your Project?',
+    description: 'Get started today with a free consultation and detailed quote. Our experts are ready to help you achieve the perfect finish.',
+    primaryButtonText: 'Get Free Estimate',
+    primaryButtonLink: '/booking',
+    secondaryButtonText: 'Call Us Now',
+    secondaryButtonLink: '/contact'
+  }
+};
+
 export default function About() {
-  const { data, loading, error } = useAboutPage();
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  if (error || !data) {
-    return <ErrorMessage error={error} />;
-  }
+  const data = aboutPageData;
 
   return (
-    <main>
+    <Box component="main">
       {/* Hero Section */}
       <HeroSection title={data.title} heroImage={data.heroImage} />
 
       {/* Company Description Section */}
-      <section style={sectionStyles}>
-        <div style={containerStyles}>
-          <div style={descriptionContainerStyles}>
-            <h2 style={sectionTitleStyles}>About Our Company</h2>
-            <p style={descriptionStyles}>{data.companyDescription}</p>
-          </div>
-        </div>
-      </section>
+      <Box sx={{ py: 8 }}>
+        <Container maxWidth="lg">
+          <Box sx={{ maxWidth: '800px', mx: 'auto', textAlign: 'center' }}>
+            <Typography
+              variant="h3"
+              component="h2"
+              sx={{
+                fontWeight: 'bold',
+                color: 'text.primary',
+                mb: 4,
+              }}
+            >
+              About Our Company
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                lineHeight: 1.7,
+                color: 'text.secondary',
+              }}
+            >
+              {data.companyDescription}
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Why Choose Us Section */}
       {data.whyChooseUs.length > 0 && (
-        <section style={{ ...sectionStyles, backgroundColor: '#f8f9fa' }}>
-          <div style={containerStyles}>
-            <h2 style={{ ...sectionTitleStyles, textAlign: 'center', marginBottom: '3rem' }}>
+        <Box sx={{ backgroundColor: 'grey.50', py: 8 }}>
+          <Container maxWidth="lg">
+            <Typography
+              variant="h3"
+              component="h2"
+              sx={{
+                fontWeight: 'bold',
+                textAlign: 'center',
+                mb: 6,
+                color: 'text.primary',
+              }}
+            >
               Why Choose Us
-            </h2>
-            <div style={gridStyles}>
+            </Typography>
+            <Grid container spacing={4}>
               {data.whyChooseUs.map((feature, index) => (
-                <FeatureCard key={index} feature={feature} />
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <FeatureCard feature={feature} />
+                </Grid>
               ))}
-            </div>
-          </div>
-        </section>
+            </Grid>
+          </Container>
+        </Box>
       )}
 
       {/* Testimonials Section */}
       {data.testimonials.length > 0 && (
-        <section style={sectionStyles}>
-          <div style={containerStyles}>
-            <h2 style={{ ...sectionTitleStyles, textAlign: 'center', marginBottom: '3rem' }}>
+        <Box sx={{ py: 8 }}>
+          <Container maxWidth="lg">
+            <Typography
+              variant="h3"
+              component="h2"
+              sx={{
+                fontWeight: 'bold',
+                textAlign: 'center',
+                mb: 6,
+                color: 'text.primary',
+              }}
+            >
               What Our Customers Say
-            </h2>
-            <div style={testimonialGridStyles}>
+            </Typography>
+            <Grid container spacing={4}>
               {data.testimonials.map((testimonial, index) => (
-                <TestimonialCard key={index} testimonial={testimonial} />
+                <Grid item xs={12} md={4} key={index}>
+                  <TestimonialCard testimonial={testimonial} />
+                </Grid>
               ))}
-            </div>
-          </div>
-        </section>
+            </Grid>
+          </Container>
+        </Box>
       )}
 
       {/* Call to Action Section */}
       <CTASection callToAction={data.callToAction} />
-    </main>
+    </Box>
   );
 }
-
-// Loading component
-const LoadingSpinner: React.FC = () => {
-  const spinnerStyles: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '60vh',
-    flexDirection: 'column',
-  };
-
-  const loadingTextStyles: React.CSSProperties = {
-    marginTop: '1rem',
-    color: '#666',
-    fontSize: '1.1rem',
-  };
-
-  const spinnerCircleStyles: React.CSSProperties = {
-    width: '40px',
-    height: '40px',
-    border: '4px solid #f3f3f3',
-    borderTop: '4px solid #1976d2',
-    borderRadius: '50%',
-    animation: 'spin 1s linear infinite',
-  };
-
-  return (
-    <div style={spinnerStyles}>
-      <div style={spinnerCircleStyles}></div>
-      <p style={loadingTextStyles}>Loading...</p>
-      <style>
-        {`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}
-      </style>
-    </div>
-  );
-};
-
-// Error component
-const ErrorMessage: React.FC<{ error: string | null }> = ({ error }) => {
-  const errorStyles: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '60vh',
-    flexDirection: 'column',
-    textAlign: 'center',
-    padding: '2rem',
-  };
-
-  const errorTitleStyles: React.CSSProperties = {
-    color: '#d32f2f',
-    fontSize: '1.5rem',
-    marginBottom: '1rem',
-  };
-
-  const errorTextStyles: React.CSSProperties = {
-    color: '#666',
-    fontSize: '1rem',
-    maxWidth: '500px',
-  };
-
-  return (
-    <div style={errorStyles}>
-      <h2 style={errorTitleStyles}>Oops! Something went wrong</h2>
-      <p style={errorTextStyles}>
-        {error || 'Unable to load the page content. Please try again later.'}
-      </p>
-    </div>
-  );
-};
-
-// Shared styles
-const sectionStyles: React.CSSProperties = {
-  padding: '4rem 2rem',
-};
-
-const containerStyles: React.CSSProperties = {
-  maxWidth: '1200px',
-  margin: '0 auto',
-};
-
-const descriptionContainerStyles: React.CSSProperties = {
-  maxWidth: '800px',
-  margin: '0 auto',
-  textAlign: 'center',
-};
-
-const sectionTitleStyles: React.CSSProperties = {
-  fontSize: 'clamp(2rem, 4vw, 2.5rem)',
-  fontWeight: 700,
-  color: '#2c3e50',
-  marginBottom: '2rem',
-  margin: '0 0 2rem 0',
-};
-
-const descriptionStyles: React.CSSProperties = {
-  fontSize: '1.2rem',
-  lineHeight: 1.7,
-  color: '#5a6c7d',
-  margin: 0,
-};
-
-const gridStyles: React.CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '2rem',
-  alignItems: 'stretch',
-};
-
-const testimonialGridStyles: React.CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-  gap: '2rem',
-  alignItems: 'stretch',
-};

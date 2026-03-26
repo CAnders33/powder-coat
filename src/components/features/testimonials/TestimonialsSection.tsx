@@ -1,162 +1,199 @@
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
   Avatar,
   Rating,
-  Stack,
+  Skeleton,
+  useTheme,
 } from '@mui/material';
-import { FormatQuote as QuoteIcon } from '@mui/icons-material';
-import type { Testimonial } from '@/types/content';
+import { FormatQuote } from '@mui/icons-material';
+
+interface Testimonial {
+  id: string;
+  name: string;
+  company?: string;
+  rating: number;
+  comment: string;
+  avatar?: string;
+}
 
 interface TestimonialsSectionProps {
-  data: Testimonial[];
+  data?: Testimonial[];
   loading?: boolean;
 }
 
-// Default testimonials if CMS data is not available
+// Default testimonials data
 const defaultTestimonials: Testimonial[] = [
   {
-    id: '1',
-    name: 'Mike Johnson',
-    company: 'Custom Motorcycles LLC',
-    content: 'Outstanding powder coating service! My motorcycle frame came out perfect with a finish that\'s both beautiful and incredibly durable. Highly recommend!',
+    id: "1",
+    name: "Mike Johnson",
+    company: "Johnson Auto Shop",
     rating: 5,
+    comment: "Outstanding work! They powder coated my custom wheels and the finish is flawless. The attention to detail and customer service exceeded my expectations.",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
   },
   {
-    id: '2',
-    name: 'Sarah Chen',
-    company: 'Auto Restoration Pro',
-    content: 'Professional service from start to finish. The team delivered exactly what was promised on time and within budget. The quality is exceptional.',
+    id: "2",
+    name: "Sarah Martinez",
+    company: "Martinez Manufacturing",
     rating: 5,
+    comment: "We've been using their industrial coating services for years. Consistently high quality, fast turnaround, and competitive pricing. Highly recommended!",
+    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
   },
   {
-    id: '3',
-    name: 'Robert Williams',
-    content: 'Had my car wheels powder coated and they look amazing! Great customer service and attention to detail. Will definitely use them again.',
+    id: "3",
+    name: "David Chen",
+    company: "Custom Fabrication Co.",
     rating: 5,
-  },
+    comment: "Professional service from start to finish. They handled our complex project with expertise and delivered exactly what we needed on time.",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+  }
 ];
 
-export default function TestimonialsSection({ data, loading }: TestimonialsSectionProps) {
-  const testimonials = data.length > 0 ? data.slice(0, 3) : defaultTestimonials;
+export default function TestimonialsSection({ data = defaultTestimonials, loading = false }: TestimonialsSectionProps) {
+  const theme = useTheme();
 
   if (loading) {
     return (
-      <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: 'primary.50' }}>
+      <Box sx={{ py: 8, backgroundColor: 'grey.50' }}>
         <Container maxWidth="lg">
-          <Typography variant="h3" component="h2" textAlign="center" gutterBottom>
-            Loading Testimonials...
-          </Typography>
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Skeleton variant="text" width="60%" height={60} sx={{ mx: 'auto', mb: 2 }} />
+            <Skeleton variant="text" width="80%" height={30} sx={{ mx: 'auto' }} />
+          </Box>
+          <Grid container spacing={4}>
+            {[1, 2, 3].map((item) => (
+              <Grid item xs={12} md={4} key={item}>
+                <Card sx={{ height: '100%' }}>
+                  <CardContent sx={{ textAlign: 'center' }}>
+                    <Skeleton variant="circular" width={80} height={80} sx={{ mx: 'auto', mb: 2 }} />
+                    <Skeleton variant="text" width="80%" height={30} sx={{ mx: 'auto', mb: 1 }} />
+                    <Skeleton variant="text" width="60%" height={20} sx={{ mx: 'auto', mb: 2 }} />
+                    <Skeleton variant="rectangular" width="100%" height={100} />
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </Box>
     );
   }
 
   return (
-    <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: 'grey.50' }}>
+    <Box sx={{ py: 8, backgroundColor: 'grey.50' }}>
       <Container maxWidth="lg">
-        <Box textAlign="center" mb={6}>
-          <Typography 
-            variant="h3" 
-            component="h2" 
-            gutterBottom
-            sx={{ 
-              fontSize: { xs: '2rem', md: '2.5rem' },
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography
+            variant="h3"
+            component="h2"
+            sx={{
               fontWeight: 'bold',
-              color: 'text.primary',
               mb: 2,
+              color: 'text.primary',
             }}
           >
             What Our Customers Say
           </Typography>
-          <Typography 
-            variant="h6" 
+          <Typography
+            variant="h6"
             color="text.secondary"
-            sx={{ maxWidth: 600, mx: 'auto' }}
+            sx={{ maxWidth: '600px', mx: 'auto' }}
           >
             Don't just take our word for it - hear from our satisfied customers
           </Typography>
         </Box>
 
         <Grid container spacing={4}>
-          {testimonials.map((testimonial) => (
+          {data.slice(0, 3).map((testimonial) => (
             <Grid item xs={12} md={4} key={testimonial.id}>
-              <Card 
-                sx={{ 
+              <Card
+                sx={{
                   height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
                   position: 'relative',
-                  p: 3,
-                  transition: 'all 0.3s ease-in-out',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
+                    transform: 'translateY(-8px)',
+                    boxShadow: theme.shadows[8],
                   },
                 }}
               >
-                <QuoteIcon 
-                  sx={{ 
+                <Box
+                  sx={{
                     position: 'absolute',
                     top: 16,
                     right: 16,
-                    fontSize: 40,
                     color: 'primary.main',
                     opacity: 0.3,
-                  }} 
-                />
-                
-                <CardContent sx={{ p: 0 }}>
-                  <Rating 
-                    value={testimonial.rating} 
-                    readOnly 
-                    sx={{ mb: 2 }}
-                  />
-                  
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
-                      mb: 3,
-                      fontStyle: 'italic',
-                      lineHeight: 1.7,
-                      color: 'text.primary',
+                  }}
+                >
+                  <FormatQuote sx={{ fontSize: 40 }} />
+                </Box>
+
+                <CardContent
+                  sx={{
+                    textAlign: 'center',
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    p: 3,
+                  }}
+                >
+                  <Avatar
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      mx: 'auto',
+                      mb: 2,
+                      border: `3px solid ${theme.palette.primary.main}`,
                     }}
+                  />
+
+                  <Typography
+                    variant="h6"
+                    component="h3"
+                    sx={{ fontWeight: 'bold', mb: 1 }}
                   >
-                    "{testimonial.content}"
+                    {testimonial.name}
                   </Typography>
 
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar 
-                      src={testimonial.image?.url}
-                      alt={testimonial.name}
-                      sx={{ 
-                        width: 48, 
-                        height: 48,
-                        bgcolor: 'primary.main',
-                      }}
+                  {testimonial.company && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2 }}
                     >
-                      {testimonial.name.charAt(0).toUpperCase()}
-                    </Avatar>
-                    
-                    <Box>
-                      <Typography 
-                        variant="subtitle1" 
-                        sx={{ fontWeight: 600, color: 'text.primary' }}
-                      >
-                        {testimonial.name}
-                      </Typography>
-                      {testimonial.company && (
-                        <Typography 
-                          variant="body2" 
-                          color="text.secondary"
-                        >
-                          {testimonial.company}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Stack>
+                      {testimonial.company}
+                    </Typography>
+                  )}
+
+                  <Rating
+                    value={testimonial.rating}
+                    readOnly
+                    sx={{ mb: 2, mx: 'auto' }}
+                  />
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      fontStyle: 'italic',
+                      lineHeight: 1.6,
+                      flexGrow: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    "{testimonial.comment}"
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>

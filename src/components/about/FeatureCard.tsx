@@ -1,84 +1,76 @@
-import React from 'react';
-import type { WhyChooseUsItem } from '@/types/about';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+} from '@mui/material';
+import {
+  Build,
+  Speed,
+  Security,
+  Nature,
+} from '@mui/icons-material';
 
-interface FeatureCardProps {
-  feature: WhyChooseUsItem;
+interface Feature {
+  title: string;
+  description: string;
+  icon?: string;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ feature }) => {
-  const cardStyles: React.CSSProperties = {
-    background: 'white',
-    borderRadius: '12px',
-    padding: '2rem',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  };
+interface FeatureCardProps {
+  feature: Feature;
+}
 
-  const iconStyles: React.CSSProperties = {
-    fontSize: '3rem',
-    marginBottom: '1rem',
-    color: '#1976d2',
-  };
+const getIcon = (iconName?: string) => {
+  switch (iconName) {
+    case 'build':
+      return <Build />;
+    case 'speed':
+      return <Speed />;
+    case 'security':
+      return <Security />;
+    case 'nature':
+      return <Nature />;
+    default:
+      return <Build />;
+  }
+};
 
-  const titleStyles: React.CSSProperties = {
-    fontSize: '1.5rem',
-    fontWeight: 700,
-    color: '#2c3e50',
-    marginBottom: '1rem',
-    margin: 0,
-  };
-
-  const descriptionStyles: React.CSSProperties = {
-    color: '#5a6c7d',
-    lineHeight: 1.6,
-    margin: 0,
-  };
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform = 'translateY(-8px)';
-    e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1)';
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)';
-  };
-
-  // Simple icon mapping
-  const getIcon = (iconName?: string) => {
-    switch (iconName) {
-      case 'shield':
-        return '🛡️';
-      case 'quality':
-        return '⭐';
-      case 'speed':
-        return '⚡';
-      case 'experience':
-        return '👨‍🔧';
-      case 'warranty':
-        return '✅';
-      case 'eco':
-        return '🌱';
-      default:
-        return '🔧';
-    }
-  };
-
+const FeatureCard = ({ feature }: FeatureCardProps) => {
   return (
-    <div 
-      style={cardStyles}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+    <Card
+      sx={{
+        height: '100%',
+        textAlign: 'center',
+        p: 3,
+        transition: 'all 0.3s ease-in-out',
+        '&:hover': {
+          transform: 'translateY(-8px)',
+          boxShadow: (theme) => theme.shadows[8],
+        },
+      }}
     >
-      <div style={iconStyles}>
-        {getIcon(feature.icon)}
-      </div>
-      <h3 style={titleStyles}>{feature.title}</h3>
-      <p style={descriptionStyles}>{feature.description}</p>
-    </div>
+      <CardContent>
+        <Box
+          sx={{
+            display: 'inline-flex',
+            p: 2,
+            borderRadius: '50%',
+            backgroundColor: 'primary.main',
+            color: 'white',
+            mb: 2,
+          }}
+        >
+          {getIcon(feature.icon)}
+        </Box>
+        <Typography variant="h6" component="h3" sx={{ fontWeight: 'bold', mb: 2 }}>
+          {feature.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+          {feature.description}
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };
 

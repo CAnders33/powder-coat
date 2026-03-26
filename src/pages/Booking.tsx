@@ -25,13 +25,31 @@ import {
   AttachMoney,
   Star,
 } from '@mui/icons-material';
-import DatePicker from '@/components/ui/DatePicker';
 import Input from '@/components/ui/Input';
-import { validateBookingForm, hasValidationErrors } from '@/utils/validation';
-import type { BookingFormData, BookingFormErrors } from '@/types/booking';
-
 // Form submission states
 type SubmissionState = 'idle' | 'loading' | 'success' | 'error';
+
+interface BookingFormData {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  yearMakeModel: string;
+  color: string;
+  numberOfParts: number;
+  details: string;
+}
+
+interface BookingFormErrors {
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  email?: string;
+  yearMakeModel?: string;
+  color?: string;
+  numberOfParts?: string;
+  details?: string;
+}
 
 interface BookingResponse {
   success: boolean;
@@ -46,10 +64,12 @@ interface BookingResponse {
 
 export default function Booking() {
   const [formData, setFormData] = useState<BookingFormData>({
-    name: '',
+    firstName: '',
+    lastName: '',
     phone: '',
-    date: '',
-    makeModel: '',
+    email: '',
+    yearMakeModel: '',
+    color: '',
     numberOfParts: 1,
     details: '',
   });
@@ -57,6 +77,48 @@ export default function Booking() {
   const [validationErrors, setValidationErrors] = useState<BookingFormErrors>({});
   const [submissionState, setSubmissionState] = useState<SubmissionState>('idle');
   const [responseMessage, setResponseMessage] = useState<string>('');
+
+  const validateForm = (data: BookingFormData): BookingFormErrors => {
+    const errors: BookingFormErrors = {};
+
+    if (!data.firstName.trim()) {
+      errors.firstName = 'First name is required';
+    }
+
+    if (!data.lastName.trim()) {
+      errors.lastName = 'Last name is required';
+    }
+
+    if (!data.phone.trim()) {
+      errors.phone = 'Phone number is required';
+    } else if (!/^\(?[\d\s\-\(\)]{10,}$/.test(data.phone)) {
+      errors.phone = 'Please enter a valid phone number';
+    }
+
+    if (!data.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    if (!data.yearMakeModel.trim()) {
+      errors.yearMakeModel = 'Year/Make/Model is required';
+    }
+
+    if (!data.color.trim()) {
+      errors.color = 'Color preference is required';
+    }
+
+    if (!data.numberOfParts || data.numberOfParts < 1) {
+      errors.numberOfParts = 'Number of parts must be at least 1';
+    }
+
+    return errors;
+  };
+
+  const hasValidationErrors = (errors: BookingFormErrors): boolean => {
+    return Object.keys(errors).length > 0;
+  };
 
   const handleInputChange = (field: keyof BookingFormData) => (value: string) => {
     const parsedValue = field === 'numberOfParts' 
@@ -73,22 +135,6 @@ export default function Booking() {
       setValidationErrors(prev => ({
         ...prev,
         [field]: undefined,
-      }));
-    }
-  };
-
-  const handleDateChange = (date: Date | null) => {
-    const dateString = date ? date.toISOString().split('T')[0] : '';
-    setFormData(prev => ({
-      ...prev,
-      date: dateString,
-    }));
-
-    // Clear validation error for date field
-    if (validationErrors.date) {
-      setValidationErrors(prev => ({
-        ...prev,
-        date: undefined,
       }));
     }
   };
@@ -118,7 +164,7 @@ export default function Booking() {
     event.preventDefault();
     
     // Validate form
-    const errors = validateBookingForm(formData);
+    const errors = validateForm(formData);
     setValidationErrors(errors);
 
     if (hasValidationErrors(errors)) {
@@ -142,27 +188,29 @@ export default function Booking() {
 
       if (result.success) {
         setSubmissionState('success');
-        setResponseMessage(result.message || 'Booking submitted successfully!');
+        setResponseMessage(result.message || 'Estimate request submitted successfully!');
         
         // Reset form
         setFormData({
-          name: '',
+          firstName: '',
+          lastName: '',
           phone: '',
-          date: '',
-          makeModel: '',
+          email: '',
+          yearMakeModel: '',
+          color: '',
           numberOfParts: 1,
           details: '',
         });
       } else {
         setSubmissionState('error');
-        setResponseMessage(result.error || 'Failed to submit booking');
+        setResponseMessage(result.error || 'Failed to submit estimate request');
         
         if (result.errors) {
           setValidationErrors(result.errors);
         }
       }
     } catch (error) {
-      console.error('Booking submission error:', error);
+      console.error('Estimate request submission error:', error);
       setSubmissionState('error');
       setResponseMessage('Network error. Please try again.');
     }
@@ -189,21 +237,21 @@ export default function Booking() {
             color: 'transparent',
           }}
         >
-          Book Your Service
+          Get Your Free Estimate
         </Typography>
         <Typography
           variant="h5"
           color="text.secondary"
           sx={{ mb: 2, maxWidth: '600px', mx: 'auto' }}
         >
-          Schedule your powder coating service today
+          Request a free quote for your powder coating project
         </Typography>
         <Typography
           variant="body1"
           color="text.secondary"
           sx={{ maxWidth: '500px', mx: 'auto' }}
         >
-          Fill out the form below and we'll get back to you within 24 hours with a quote and available appointment times.
+          Fill out the form below and we'll get back to you within 24 hours with a detailed estimate and project timeline.
         </Typography>
       </Box>
 
@@ -212,7 +260,7 @@ export default function Booking() {
         <Grid item xs={12} md={8}>
           <Paper elevation={2} sx={{ p: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 4 }}>
-              Service Request Form
+              Free Estimate Request
             </Typography>
 
             {/* Status Messages */}
@@ -222,7 +270,7 @@ export default function Booking() {
                 sx={{ mb: 4 }}
                 action={
                   <Button color="inherit" size="small" onClick={resetForm}>
-                    Book Another
+                    Request Another
                   </Button>
                 }
               >
@@ -249,15 +297,28 @@ export default function Booking() {
 
             <Box component="form" onSubmit={handleSubmit}>
               <Grid container spacing={3}>
-                {/* Name Field */}
+                {/* First Name Field */}
                 <Grid item xs={12} sm={6}>
                   <Input
-                    name="name"
-                    label="Full Name"
-                    placeholder="Enter your full name"
-                    value={formData.name}
-                    onChange={handleInputChange('name')}
-                    error={validationErrors.name}
+                    name="firstName"
+                    label="First Name"
+                    placeholder="Enter your first name"
+                    value={formData.firstName}
+                    onChange={handleInputChange('firstName')}
+                    error={validationErrors.firstName}
+                    required
+                  />
+                </Grid>
+
+                {/* Last Name Field */}
+                <Grid item xs={12} sm={6}>
+                  <Input
+                    name="lastName"
+                    label="Last Name"
+                    placeholder="Enter your last name"
+                    value={formData.lastName}
+                    onChange={handleInputChange('lastName')}
+                    error={validationErrors.lastName}
                     required
                   />
                 </Grid>
@@ -275,15 +336,42 @@ export default function Booking() {
                   />
                 </Grid>
 
-                {/* Date Field */}
+                {/* Email Field */}
                 <Grid item xs={12} sm={6}>
-                  <DatePicker
-                    label="Preferred Date"
-                    value={formData.date ? new Date(formData.date) : null}
-                    onChange={handleDateChange}
-                    error={validationErrors.date}
+                  <Input
+                    name="email"
+                    label="Email Address"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleInputChange('email')}
+                    error={validationErrors.email}
                     required
-                    minDate={new Date()}
+                  />
+                </Grid>
+
+                {/* Year/Make/Model Field */}
+                <Grid item xs={12} sm={6}>
+                  <Input
+                    name="yearMakeModel"
+                    label="Year/Make/Model"
+                    placeholder="e.g., 2020 Toyota Camry"
+                    value={formData.yearMakeModel}
+                    onChange={handleInputChange('yearMakeModel')}
+                    error={validationErrors.yearMakeModel}
+                    required
+                  />
+                </Grid>
+
+                {/* Color Field */}
+                <Grid item xs={12} sm={6}>
+                  <Input
+                    name="color"
+                    label="Preferred Color"
+                    placeholder="e.g., Matte Black, Red, Custom"
+                    value={formData.color}
+                    onChange={handleInputChange('color')}
+                    error={validationErrors.color}
+                    required
                   />
                 </Grid>
 
@@ -305,27 +393,14 @@ export default function Booking() {
                   />
                 </Grid>
 
-                {/* Make and Model */}
-                <Grid item xs={12}>
-                  <Input
-                    name="makeModel"
-                    label="Vehicle Make and Model"
-                    placeholder="e.g., 2020 Toyota Camry"
-                    value={formData.makeModel}
-                    onChange={handleInputChange('makeModel')}
-                    error={validationErrors.makeModel}
-                    required
-                  />
-                </Grid>
-
-                {/* Details */}
+                {/* Additional Details */}
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
                     multiline
                     rows={4}
                     label="Additional Details"
-                    placeholder="Describe the parts that need coating, preferred colors, any special requirements..."
+                    placeholder="Describe the parts that need coating, any special requirements, timeline, etc..."
                     value={formData.details}
                     onChange={handleTextFieldChange('details')}
                     error={!!validationErrors.details}
@@ -353,7 +428,7 @@ export default function Booking() {
                       minWidth: 200,
                     }}
                   >
-                    {submissionState === 'loading' ? 'Submitting...' : 'Submit Booking Request'}
+                    {submissionState === 'loading' ? 'Submitting...' : 'Get Free Estimate'}
                   </Button>
                 </Grid>
               </Grid>
@@ -378,8 +453,8 @@ export default function Booking() {
                       <Chip label="1" size="small" color="primary" />
                     </ListItemIcon>
                     <ListItemText
-                      primary="Quote Review"
-                      secondary="We'll review your request and prepare a detailed quote"
+                      primary="Estimate Review"
+                      secondary="We'll review your request and prepare a detailed estimate"
                     />
                   </ListItem>
                   <ListItem>
@@ -388,7 +463,7 @@ export default function Booking() {
                     </ListItemIcon>
                     <ListItemText
                       primary="Quick Response"
-                      secondary="You'll hear back from us within 24 hours"
+                      secondary="You'll receive your free estimate within 24 hours"
                     />
                   </ListItem>
                   <ListItem>
@@ -397,7 +472,7 @@ export default function Booking() {
                     </ListItemIcon>
                     <ListItemText
                       primary="Schedule Service"
-                      secondary="We'll confirm your appointment and service details"
+                      secondary="Once approved, we'll schedule your project"
                     />
                   </ListItem>
                 </List>

@@ -1,323 +1,332 @@
 import {
+  Box,
   Container,
   Typography,
   Grid,
   Card,
   CardContent,
-  CardMedia,
-  Box,
-  Chip,
   Button,
-  Skeleton,
-  Alert,
+  useTheme,
+  useMediaQuery,
+  Chip,
 } from '@mui/material';
-import { AttachMoney, Build, Palette } from '@mui/icons-material';
-import { useServices } from '@/hooks/useServices';
-import type { Service } from '@/types/services';
+import {
+  DirectionsCar,
+  Settings,
+  Palette,
+  Shield,
+  Terrain,
+  Build,
+  Engineering,
+  Phone,
+  BookOnline,
+} from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
-const SERVICES_QUERY = `*[_type == "service"] | order(_createdAt asc) {
-  _id,
-  title,
-  shortDescription,
-  description,
-  features,
-  price,
-  image {
-    asset,
-    alt
-  }
-}`;
+const servicesData = [
+  {
+    id: 'wheels',
+    title: 'Powder Coating Wheels',
+    description: 'Transform your wheels with durable, custom powder coating that resists chips, scratches, and corrosion while enhancing your vehicle\'s appearance.',
+    icon: <DirectionsCar />,
+    price: 'Starting at $120/wheel',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=400&fit=crop',
+    popular: true,
+  },
+  {
+    id: 'brake-calipers',
+    title: 'Brake Calipers',
+    description: 'High-temperature powder coating for brake calipers that withstands extreme heat while providing a professional, long-lasting finish.',
+    icon: <Settings />,
+    price: 'Starting at $80/caliper',
+    image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500&h=400&fit=crop',
+  },
+  {
+    id: 'chrome-delete',
+    title: 'Chrome Delete',
+    description: 'Modern chrome delete services using powder coating for trim pieces, grilles, and accents to achieve that sleek, murdered-out look.',
+    icon: <Palette />,
+    price: 'Starting at $150',
+    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&h=400&fit=crop',
+  },
+  {
+    id: 'ceramic-coating',
+    title: 'Ceramic Coating',
+    description: 'Premium ceramic powder coating for ultimate protection and durability. Perfect for high-performance applications and extreme environments.',
+    icon: <Shield />,
+    price: 'Starting at $200',
+    image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=500&h=400&fit=crop',
+    popular: true,
+  },
+  {
+    id: 'off-road',
+    title: 'Off Road Components',
+    description: 'Rugged powder coating solutions for off-road vehicles, including bumpers, rock sliders, roll cages, and protective equipment.',
+    icon: <Terrain />,
+    price: 'Starting at $180',
+    image: 'https://images.unsplash.com/photo-1544558586-5f465aa4b951?w=500&h=400&fit=crop',
+  },
+  {
+    id: 'engine-components',
+    title: 'Engine Components',
+    description: 'Specialized coating for engine parts including manifolds, headers, valve covers, and brackets with high-temperature formulations.',
+    icon: <Build />,
+    price: 'Starting at $100',
+    image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500&h=400&fit=crop',
+  },
+  {
+    id: 'industrial',
+    title: 'Industrial Applications',
+    description: 'Heavy-duty industrial powder coating for machinery, equipment, structural components, and manufacturing applications.',
+    icon: <Engineering />,
+    price: 'Quote on request',
+    image: 'https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=500&h=400&fit=crop',
+  },
+];
 
 export default function Services() {
-  const { data: services, loading, error } = useServices(SERVICES_QUERY);
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  // Mock data for when Sanity is not available
-  const mockServices: Service[] = [
-    {
-      id: 'mock-1',
-      title: 'Automotive Powder Coating',
-      description: 'Professional powder coating services for automotive parts and components.',
-      shortDescription: 'High-quality powder coating for automotive parts with excellent durability and finish.',
-      features: ['Corrosion Resistant', 'UV Protection', 'Multiple Colors Available', '5-Year Warranty'],
-      price: {
-        amount: 25,
-        currency: 'USD',
-        unit: 'per sq ft'
-      },
-    },
-    {
-      id: 'mock-2',
-      title: 'Industrial Equipment Coating',
-      description: 'Durable powder coating solutions for industrial equipment and machinery.',
-      shortDescription: 'Heavy-duty coating solutions designed for industrial applications and harsh environments.',
-      features: ['Chemical Resistance', 'High Temperature Rating', 'Anti-Corrosive', 'Custom Colors'],
-      price: {
-        amount: 35,
-        currency: 'USD',
-        unit: 'per sq ft'
-      },
-    },
-    {
-      id: 'mock-3',
-      title: 'Architectural Coating',
-      description: 'Beautiful and long-lasting powder coating for architectural elements.',
-      shortDescription: 'Architectural powder coating for railings, facades, and structural components.',
-      features: ['Weather Resistant', 'Fade Resistant', 'Easy Maintenance', 'AAMA Certified'],
-      price: {
-        amount: 30,
-        currency: 'USD',
-        unit: 'per sq ft'
-      },
-    },
-    {
-      id: 'mock-4',
-      title: 'Custom Color Matching',
-      description: 'Precision color matching services for unique and branded applications.',
-      shortDescription: 'Expert color matching and custom coating solutions for specialized requirements.',
-      features: ['Exact Color Match', 'Brand Compliance', 'Sample Testing', 'Quality Assurance'],
-      price: {
-        amount: 45,
-        currency: 'USD',
-        unit: 'per sq ft'
-      },
-    },
-    {
-      id: 'mock-5',
-      title: 'Furniture Restoration',
-      description: 'Transform and protect furniture with professional powder coating.',
-      shortDescription: 'Furniture powder coating for both residential and commercial applications.',
-      features: ['Scratch Resistant', 'Easy to Clean', 'Multiple Textures', 'Eco-Friendly'],
-      price: {
-        amount: 20,
-        currency: 'USD',
-        unit: 'per piece'
-      },
-    },
-    {
-      id: 'mock-6',
-      title: 'Marine Grade Coating',
-      description: 'Specialized powder coating designed for marine and coastal environments.',
-      shortDescription: 'Marine-grade coating solutions that withstand saltwater and coastal conditions.',
-      features: ['Salt Spray Resistant', 'Marine Grade', 'Anti-Fouling', '10-Year Warranty'],
-      price: {
-        amount: 50,
-        currency: 'USD',
-        unit: 'per sq ft'
-      },
-    },
-  ];
+  const handleCallClick = () => {
+    window.location.href = 'tel:+15551234567';
+  };
 
-  const displayServices = services.length > 0 ? services : mockServices;
-
-  if (error) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Alert severity="error" sx={{ mb: 4 }}>
-          Unable to load services. Please try again later.
-        </Alert>
-      </Container>
-    );
-  }
+  const handleBookClick = () => {
+    navigate('/booking');
+  };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
+    <Box>
       {/* Header Section */}
-      <Box sx={{ textAlign: 'center', mb: 8 }}>
-        <Typography
-          variant="h2"
-          component="h1"
-          sx={{
-            fontWeight: 'bold',
-            mb: 3,
-            background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            color: 'transparent',
-          }}
-        >
-          Our Services
-        </Typography>
-        <Typography
-          variant="h5"
-          color="text.secondary"
-          sx={{ mb: 2, maxWidth: '800px', mx: 'auto' }}
-        >
-          Professional powder coating solutions for every application
-        </Typography>
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          sx={{ maxWidth: '600px', mx: 'auto' }}
-        >
-          From automotive parts to architectural elements, we provide high-quality powder coating
-          services with exceptional durability, finish, and environmental protection.
-        </Typography>
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+          color: 'white',
+          py: { xs: 8, md: 12 },
+          textAlign: 'center',
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography
+            variant={isMobile ? 'h3' : 'h2'}
+            component="h1"
+            gutterBottom
+            fontWeight="bold"
+          >
+            Professional Powder Coating Services
+          </Typography>
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              opacity: 0.9, 
+              maxWidth: 800, 
+              mx: 'auto',
+              mb: 4,
+              lineHeight: 1.4 
+            }}
+          >
+            From automotive wheels to industrial equipment, we provide premium powder coating 
+            solutions with exceptional durability and stunning finishes.
+          </Typography>
+          
+          {/* CTA Buttons */}
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row' } }}>
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<BookOnline />}
+              onClick={handleBookClick}
+              sx={{
+                backgroundColor: 'white',
+                color: 'primary.main',
+                fontWeight: 'bold',
+                px: 4,
+                py: 1.5,
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                },
+              }}
+            >
+              Book Now
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              startIcon={<Phone />}
+              onClick={handleCallClick}
+              sx={{
+                borderColor: 'white',
+                color: 'white',
+                fontWeight: 'bold',
+                px: 4,
+                py: 1.5,
+                '&:hover': {
+                  borderColor: 'white',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                },
+              }}
+            >
+              Call Us: (555) 123-4567
+            </Button>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Services Blurb */}
+      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', maxWidth: 900, mx: 'auto' }}>
+            <Typography variant="h4" component="h2" gutterBottom fontWeight="bold" color="primary.main">
+              Why Choose Our Powder Coating Services?
+            </Typography>
+            <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'text.secondary', mb: 3 }}>
+              Our state-of-the-art powder coating facility offers superior finishes that outlast traditional paint. 
+              Whether you're looking to restore automotive components, protect industrial equipment, or create 
+              custom finishes, our expert team delivers exceptional results with faster turnaround times and 
+              environmentally friendly processes.
+            </Typography>
+            <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'text.secondary' }}>
+              From high-temperature engine components to delicate decorative pieces, we have the expertise 
+              and equipment to handle projects of all sizes. Every item is carefully prepared, coated with 
+              precision, and quality-checked to ensure a flawless finish that will last for years to come.
+            </Typography>
+          </Box>
+        </Container>
       </Box>
 
       {/* Services Grid */}
-      <Grid container spacing={4}>
-        {loading
-          ? Array.from({ length: 6 }).map((_, index) => (
-              <Grid item xs={12} md={6} lg={4} key={index}>
-                <Card sx={{ height: '100%' }}>
-                  <Skeleton variant="rectangular" height={200} />
-                  <CardContent>
-                    <Skeleton variant="text" width="80%" height={32} />
-                    <Skeleton variant="text" width="100%" height={20} />
-                    <Skeleton variant="text" width="90%" height={20} />
-                    <Box sx={{ mt: 2 }}>
-                      <Skeleton variant="rectangular" width={120} height={32} />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))
-          : displayServices.map((service) => (
-              <Grid item xs={12} md={6} lg={4} key={service.id}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: (theme) => theme.shadows[8],
-                    },
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
+            Our Specialized Services
+          </Typography>
+          <Typography variant="h6" color="text.secondary">
+            Professional coating solutions tailored to your specific needs
+          </Typography>
+        </Box>
+
+        <Grid container spacing={4}>
+          {servicesData.map((service) => (
+            <Grid item xs={12} md={6} lg={4} key={service.id}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'all 0.3s ease-in-out',
+                  position: 'relative',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                    boxShadow: theme.shadows[12],
+                  },
+                }}
+              >
+                {service.popular && (
+                  <Chip
+                    label="Popular"
+                    color="secondary"
+                    sx={{
+                      position: 'absolute',
+                      top: 12,
+                      right: 12,
+                      zIndex: 1,
+                      fontWeight: 'bold',
+                    }}
+                  />
+                )}
+                
+                <Box
+                  component="img"
+                  src={service.image}
+                  alt={service.title}
+                  sx={{ 
+                    width: '100%', 
+                    height: 220, 
+                    objectFit: 'cover',
+                    filter: 'brightness(0.9)',
                   }}
-                >
-                  {service.image ? (
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={service.image.url}
-                      alt={service.image.alt}
-                      sx={{ objectFit: 'cover' }}
-                    />
-                  ) : (
+                />
+                
+                <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                     <Box
                       sx={{
-                        height: 200,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: 'grey.100',
-                        color: 'grey.500',
+                        width: 48,
+                        height: 48,
+                        borderRadius: '50%',
+                        backgroundColor: 'primary.main',
+                        color: 'white',
+                        mr: 2,
+                        flexShrink: 0,
                       }}
                     >
-                      <Box sx={{ textAlign: 'center' }}>
-                        <Palette sx={{ fontSize: 48, mb: 1 }} />
-                        <Typography variant="body2">Service Image</Typography>
-                      </Box>
+                      {service.icon}
                     </Box>
-                  )}
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography variant="h6" fontWeight="bold" gutterBottom>
+                        {service.title}
+                      </Typography>
+                      <Typography variant="h6" color="primary.main" fontWeight="bold">
+                        {service.price}
+                      </Typography>
+                    </Box>
+                  </Box>
                   
-                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Typography
-                      variant="h6"
-                      component="h3"
-                      sx={{ fontWeight: 'bold', mb: 2 }}
-                    >
-                      {service.title}
-                    </Typography>
-                    
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 3, flexGrow: 1 }}
-                    >
-                      {service.shortDescription}
-                    </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1 }}>
+                    {service.description}
+                  </Typography>
+                  
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    startIcon={<BookOnline />}
+                    onClick={handleBookClick}
+                    sx={{ mt: 'auto' }}
+                  >
+                    Get Quote
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-                    {/* Features */}
-                    {service.features && service.features.length > 0 && (
-                      <Box sx={{ mb: 3 }}>
-                        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 'bold' }}>
-                          Features:
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {service.features.slice(0, 4).map((feature, index) => (
-                            <Chip
-                              key={index}
-                              label={feature}
-                              size="small"
-                              variant="outlined"
-                              color="primary"
-                            />
-                          ))}
-                          {service.features.length > 4 && (
-                            <Chip
-                              label={`+${service.features.length - 4} more`}
-                              size="small"
-                              variant="outlined"
-                              color="default"
-                            />
-                          )}
-                        </Box>
-                      </Box>
-                    )}
-
-                    {/* Price */}
-                    {service.price && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <AttachMoney color="primary" sx={{ mr: 1 }} />
-                        <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold' }}>
-                          {service.price.amount
-                            ? `$${service.price.amount}`
-                            : service.price.from && service.price.to
-                            ? `$${service.price.from}-${service.price.to}`
-                            : 'Contact for pricing'
-                          }
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-                          {service.price.unit}
-                        </Typography>
-                      </Box>
-                    )}
-
-                    {/* Action Buttons */}
-                    <Box sx={{ mt: 'auto', display: 'flex', gap: 1 }}>
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        sx={{ textTransform: 'none' }}
-                        startIcon={<Build />}
-                      >
-                        Get Quote
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-      </Grid>
-
-      {/* Bottom CTA Section */}
-      <Box sx={{ textAlign: 'center', mt: 8, py: 6, backgroundColor: 'grey.50', borderRadius: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
-          Need a Custom Solution?
-        </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: '600px', mx: 'auto' }}>
-          Our experienced team can work with you to develop custom powder coating solutions
-          that meet your specific requirements and industry standards.
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Button
-            variant="contained"
-            size="large"
-            sx={{ textTransform: 'none', minWidth: 160 }}
-          >
-            Contact Us Today
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            sx={{ textTransform: 'none', minWidth: 160 }}
-          >
-            View Gallery
-          </Button>
+        {/* Bottom CTA Section */}
+        <Box sx={{ textAlign: 'center', mt: 8, p: 4, backgroundColor: 'grey.50', borderRadius: 2 }}>
+          <Typography variant="h5" gutterBottom fontWeight="bold">
+            Ready to Get Started?
+          </Typography>
+          <Typography variant="body1" color="text.secondary" paragraph sx={{ maxWidth: 600, mx: 'auto' }}>
+            Contact us today for a free consultation and detailed quote. Our experts are ready to help 
+            you achieve the perfect finish for your project.
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row' } }}>
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<BookOnline />}
+              onClick={handleBookClick}
+              sx={{ px: 4 }}
+            >
+              Book Appointment
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              startIcon={<Phone />}
+              onClick={handleCallClick}
+              sx={{ px: 4 }}
+            >
+              Call (555) 123-4567
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 }

@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from '@/components/layout/Layout';
-import Home from '@/pages/Home';
-import Services from '@/pages/Services';
-import Gallery from '@/pages/Gallery';
-import About from '@/pages/About';
-import Contact from '@/pages/Contact';
-import Booking from '@/pages/Booking';
+import Layout from './components/layout/Layout';
+import Home from './pages/Home';
+import Services from './pages/Services';
+import Gallery from './pages/Gallery';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Booking from './pages/Booking';
 
 function App() {
   return (

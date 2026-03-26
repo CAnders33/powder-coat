@@ -1,4 +1,3 @@
-import { BookingFormData } from '@/types/booking';
 import { formatDate, formatPhoneNumber } from '@/utils/formatting';
 import { COMPANY_INFO } from '@/utils/constants';
 

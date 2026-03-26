@@ -1,139 +1,153 @@
-import { Box, Container, Typography, Grid, Card, CardContent, Avatar } from '@mui/material';
-import { 
-  Security as SecurityIcon, 
-  Speed as SpeedIcon, 
-  Star as StarIcon,
-  CheckCircle as CheckIcon,
-  Build as BuildIcon,
-  Nature as EcoIcon,
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  useTheme,
+  Skeleton,
+} from '@mui/material';
+import {
+  Build,
+  Speed,
+  Security,
+  Nature,
 } from '@mui/icons-material';
-import type { TrustFeature } from '@/types/content';
+
+interface TrustFeature {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
 
 interface TrustSectionProps {
-  data: TrustFeature[];
+  data?: TrustFeature[];
   loading?: boolean;
 }
 
-// Icon mapping for different trust features
-const iconMap: Record<string, React.ReactNode> = {
-  security: <SecurityIcon />,
-  speed: <SpeedIcon />,
-  star: <StarIcon />,
-  check: <CheckIcon />,
-  build: <BuildIcon />,
-  eco: <EcoIcon />,
-};
-
-// Default trust features if CMS data is not available
+// Default trust features data
 const defaultTrustFeatures: TrustFeature[] = [
   {
-    id: '1',
-    title: 'Quality Guaranteed',
-    description: 'Professional-grade powder coating with industry-leading durability standards.',
-    icon: 'star',
+    icon: <Build />,
+    title: 'Expert Craftsmanship',
+    description: 'Over 15 years of professional powder coating experience with meticulous attention to detail',
   },
   {
-    id: '2', 
+    icon: <Speed />,
     title: 'Fast Turnaround',
-    description: 'Quick service without compromising quality. Most jobs completed within 3-5 days.',
-    icon: 'speed',
+    description: 'Quick project completion without compromising on quality - most jobs completed within 3-5 days',
   },
   {
-    id: '3',
+    icon: <Security />,
+    title: 'Durable Protection',
+    description: 'Superior coating that resists chipping, fading, and corrosion for long-lasting beauty',
+  },
+  {
+    icon: <Nature />,
     title: 'Eco-Friendly Process',
-    description: 'Environmentally safe powder coating process with minimal waste and emissions.',
-    icon: 'eco',
+    description: 'Environmentally conscious coating process with zero VOC emissions and recyclable materials',
   },
 ];
 
-export default function TrustSection({ data, loading }: TrustSectionProps) {
-  const features = data.length > 0 ? data : defaultTrustFeatures;
+export default function TrustSection({ data = defaultTrustFeatures, loading = false }: TrustSectionProps) {
+  const theme = useTheme();
 
   if (loading) {
     return (
-      <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: 'grey.50' }}>
+      <Box sx={{ py: 8, backgroundColor: 'grey.50' }}>
         <Container maxWidth="lg">
-          <Typography variant="h3" component="h2" textAlign="center" gutterBottom>
-            Loading...
-          </Typography>
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Skeleton variant="text" width="60%" height={60} sx={{ mx: 'auto', mb: 2 }} />
+            <Skeleton variant="text" width="80%" height={30} sx={{ mx: 'auto' }} />
+          </Box>
+          <Grid container spacing={4}>
+            {[1, 2, 3, 4].map((item) => (
+              <Grid item xs={12} sm={6} md={3} key={item}>
+                <Card sx={{ height: '100%', textAlign: 'center' }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Skeleton variant="circular" width={60} height={60} sx={{ mx: 'auto', mb: 2 }} />
+                    <Skeleton variant="text" width="80%" height={30} sx={{ mx: 'auto', mb: 1 }} />
+                    <Skeleton variant="text" width="100%" height={20} sx={{ mb: 1 }} />
+                    <Skeleton variant="text" width="90%" height={20} />
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </Box>
     );
   }
 
   return (
-    <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: 'grey.50' }}>
+    <Box sx={{ py: 8, backgroundColor: 'grey.50' }}>
       <Container maxWidth="lg">
-        <Box textAlign="center" mb={6}>
-          <Typography 
-            variant="h3" 
-            component="h2" 
-            gutterBottom
-            sx={{ 
-              fontSize: { xs: '2rem', md: '2.5rem' },
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography
+            variant="h3"
+            component="h2"
+            sx={{
               fontWeight: 'bold',
-              color: 'text.primary',
               mb: 2,
+              color: 'text.primary',
             }}
           >
-            Why Choose Us
+            Why Choose Our Services?
           </Typography>
-          <Typography 
-            variant="h6" 
+          <Typography
+            variant="h6"
             color="text.secondary"
-            sx={{ maxWidth: 600, mx: 'auto' }}
+            sx={{ maxWidth: '600px', mx: 'auto' }}
           >
-            Trusted by customers for professional powder coating services
+            We deliver exceptional results with industry-leading techniques and unmatched customer service
           </Typography>
         </Box>
 
         <Grid container spacing={4}>
-          {features.map((feature) => (
-            <Grid item xs={12} md={4} key={feature.id}>
-              <Card 
-                sx={{ 
+          {data.map((feature, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card
+                sx={{
                   height: '100%',
                   textAlign: 'center',
-                  p: 3,
-                  transition: 'all 0.3s ease-in-out',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-8px)',
-                    boxShadow: '0 12px 24px rgba(0,0,0,0.15)',
+                    boxShadow: theme.shadows[8],
                   },
-                  border: '1px solid',
-                  borderColor: 'grey.200',
                 }}
               >
-                <CardContent>
-                  <Avatar
+                <CardContent sx={{ p: 3 }}>
+                  <Box
                     sx={{
-                      bgcolor: 'primary.main',
-                      width: 64,
-                      height: 64,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: 60,
+                      height: 60,
+                      borderRadius: '50%',
+                      backgroundColor: 'primary.main',
+                      color: 'white',
                       mx: 'auto',
-                      mb: 3,
-                    }}
-                  >
-                    {iconMap[feature.icon] || <CheckIcon />}
-                  </Avatar>
-                  
-                  <Typography 
-                    variant="h5" 
-                    component="h3" 
-                    gutterBottom
-                    sx={{ 
-                      fontWeight: 600,
-                      color: 'text.primary',
                       mb: 2,
                     }}
+                  >
+                    {feature.icon}
+                  </Box>
+                  
+                  <Typography
+                    variant="h6"
+                    component="h3"
+                    sx={{ fontWeight: 'bold', mb: 2 }}
                   >
                     {feature.title}
                   </Typography>
                   
-                  <Typography 
-                    variant="body1" 
+                  <Typography
+                    variant="body2"
                     color="text.secondary"
-                    sx={{ lineHeight: 1.7 }}
+                    sx={{ lineHeight: 1.6 }}
                   >
                     {feature.description}
                   </Typography>
