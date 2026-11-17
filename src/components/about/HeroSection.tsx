@@ -5,6 +5,7 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
+import { colors } from '../../theme';
 
 interface HeroSectionProps {
   title: string;
@@ -23,10 +24,10 @@ const HeroSection = ({ title, heroImage }: HeroSectionProps) => {
       sx={{
         background: heroImage?.url 
           ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroImage.url})`
-          : 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+          : `linear-gradient(135deg, ${colors.primaryAccent} 0%, ${colors.secondaryAccent} 100%)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        color: 'white',
+        color: colors.primaryText,
         py: { xs: 8, md: 12 },
         textAlign: 'center',
         minHeight: '60vh',

@@ -26,6 +26,7 @@ import {
   Star,
 } from '@mui/icons-material';
 import Input from '@/components/ui/Input';
+import { colors } from '../theme';
 // Form submission states
 type SubmissionState = 'idle' | 'loading' | 'success' | 'error';
 
@@ -231,7 +232,7 @@ export default function Booking() {
           sx={{
             fontWeight: 'bold',
             mb: 3,
-            background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+            background: `linear-gradient(45deg, ${colors.primaryAccent}, ${colors.secondaryAccent})`,
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             color: 'transparent',

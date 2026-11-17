@@ -22,6 +22,7 @@ import {
   BookOnline,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { colors } from '../theme';
 
 const servicesData = [
   {
@@ -102,8 +103,8 @@ export default function Services() {
       {/* Header Section */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
-          color: 'white',
+          background: `linear-gradient(135deg, ${colors.primaryAccent} 0%, ${colors.secondaryAccent} 100%)`,
+          color: colors.primaryText,
           py: { xs: 8, md: 12 },
           textAlign: 'center',
         }}
@@ -139,13 +140,13 @@ export default function Services() {
               startIcon={<BookOnline />}
               onClick={handleBookClick}
               sx={{
-                backgroundColor: 'white',
-                color: 'primary.main',
+                backgroundColor: colors.primaryText,
+                color: colors.pageBackground,
                 fontWeight: 'bold',
                 px: 4,
                 py: 1.5,
                 '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  backgroundColor: `${colors.primaryText}CC`,
                 },
               }}
             >
@@ -157,14 +158,14 @@ export default function Services() {
               startIcon={<Phone />}
               onClick={handleCallClick}
               sx={{
-                borderColor: 'white',
-                color: 'white',
+                borderColor: colors.primaryText,
+                color: colors.primaryText,
                 fontWeight: 'bold',
                 px: 4,
                 py: 1.5,
                 '&:hover': {
-                  borderColor: 'white',
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderColor: colors.primaryText,
+                  backgroundColor: `${colors.primaryText}1A`,
                 },
               }}
             >
@@ -175,7 +176,7 @@ export default function Services() {
       </Box>
 
       {/* Services Blurb */}
-      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
+      <Box sx={{ py: 6, backgroundColor: colors.cardSurface }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'center', maxWidth: 900, mx: 'auto' }}>
             <Typography variant="h4" component="h2" gutterBottom fontWeight="bold" color="primary.main">
@@ -297,7 +298,7 @@ export default function Services() {
         </Grid>
 
         {/* Bottom CTA Section */}
-        <Box sx={{ textAlign: 'center', mt: 8, p: 4, backgroundColor: 'grey.50', borderRadius: 2 }}>
+        <Box sx={{ textAlign: 'center', mt: 8, p: 4, backgroundColor: colors.cardSurface, borderRadius: 2 }}>
           <Typography variant="h5" gutterBottom fontWeight="bold">
             Ready to Get Started?
           </Typography>

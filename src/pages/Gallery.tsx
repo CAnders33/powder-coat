@@ -17,6 +17,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from '@mui/icons-material';
+import { colors } from '../theme';
 
 interface GalleryImage {
   id: string;
@@ -189,7 +190,7 @@ export default function Gallery() {
           sx={{
             fontWeight: 'bold',
             mb: 3,
-            background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+            background: `linear-gradient(45deg, ${colors.primaryAccent}, ${colors.secondaryAccent})`,
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             color: 'transparent',
@@ -238,7 +239,7 @@ export default function Gallery() {
                 loading="lazy"
                 sx={{ 
                   objectFit: 'cover',
-                  backgroundColor: 'grey.100',
+                  backgroundColor: colors.cardSurface,
                 }}
               />
               <CardContent sx={{ height: 150, display: 'flex', flexDirection: 'column' }}>
@@ -313,7 +314,7 @@ export default function Gallery() {
               position: 'relative',
               maxWidth: '90vw',
               maxHeight: '90vh',
-              backgroundColor: 'white',
+              backgroundColor: colors.cardSurface,
               borderRadius: 2,
               boxShadow: 24,
               outline: 'none',

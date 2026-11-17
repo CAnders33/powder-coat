@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { colors } from '../../theme';
 
 interface HeroData {
   title: string;
@@ -37,8 +38,8 @@ export default function Hero({ data, loading = false }: HeroProps) {
     return (
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
-          color: 'white',
+          background: `linear-gradient(135deg, ${colors.primaryAccent} 0%, ${colors.secondaryAccent} 100%)`,
+          color: colors.primaryText,
           minHeight: '70vh',
           display: 'flex',
           alignItems: 'center',
@@ -62,8 +63,8 @@ export default function Hero({ data, loading = false }: HeroProps) {
   return (
     <Box
       sx={{
-        background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
-        color: 'white',
+        background: `linear-gradient(135deg, ${colors.primaryAccent} 0%, ${colors.secondaryAccent} 100%)`,
+        color: colors.primaryText,
         minHeight: '70vh',
         display: 'flex',
         alignItems: 'center',
@@ -130,8 +131,8 @@ export default function Hero({ data, loading = false }: HeroProps) {
             endIcon={<ArrowForward />}
             onClick={handleCTAClick}
             sx={{
-              backgroundColor: 'white',
-              color: 'primary.main',
+              backgroundColor: colors.primaryText,
+              color: colors.pageBackground,
               fontWeight: 'bold',
               px: 4,
               py: 2,
@@ -140,7 +141,7 @@ export default function Hero({ data, loading = false }: HeroProps) {
               borderRadius: 2,
               boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
               '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.9)',
+                backgroundColor: `${colors.primaryText}CC`,
                 transform: 'translateY(-2px)',
                 boxShadow: '0 12px 24px rgba(0,0,0,0.3)',
               },

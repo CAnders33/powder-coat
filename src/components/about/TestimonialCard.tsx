@@ -7,6 +7,7 @@ import {
   Box,
 } from '@mui/material';
 import { FormatQuote } from '@mui/icons-material';
+import { colors } from '../../theme';
 
 interface Testimonial {
   name: string;
@@ -39,7 +40,7 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
           position: 'absolute',
           top: 16,
           right: 16,
-          color: 'primary.main',
+          color: colors.primaryAccent,
           opacity: 0.3,
         }}
       >
@@ -55,7 +56,7 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
               width: 64,
               height: 64,
               mr: 2,
-              border: (theme) => `3px solid ${theme.palette.primary.main}`,
+              border: `3px solid ${colors.primaryAccent}`,
             }}
           />
           <Box>

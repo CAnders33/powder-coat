@@ -8,6 +8,7 @@ import HeroSection from '@/components/about/HeroSection';
 import FeatureCard from '@/components/about/FeatureCard';
 import TestimonialCard from '@/components/about/TestimonialCard';
 import CTASection from '@/components/about/CTASection';
+import { colors } from '../theme';
 
 // Static data for the About page
 const aboutPageData = {
@@ -117,7 +118,7 @@ export default function About() {
 
       {/* Why Choose Us Section */}
       {data.whyChooseUs.length > 0 && (
-        <Box sx={{ backgroundColor: 'grey.50', py: 8 }}>
+        <Box sx={{ backgroundColor: colors.cardSurface, py: 8 }}>
           <Container maxWidth="lg">
             <Typography
               variant="h3"

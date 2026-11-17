@@ -24,6 +24,7 @@ import {
   CheckCircle,
 } from '@mui/icons-material';
 import Input from '@/components/ui/Input';
+import { colors } from '../theme';
 
 // Contact form data types
 interface ContactFormData {
@@ -213,8 +214,8 @@ export default function Contact() {
       {/* Hero Section */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
-          color: 'white',
+          background: `linear-gradient(135deg, ${colors.primaryAccent} 0%, ${colors.secondaryAccent} 100%)`,
+          color: colors.primaryText,
           py: 8,
           textAlign: 'center',
         }}
@@ -258,8 +259,8 @@ export default function Contact() {
                       display: 'inline-flex',
                       p: 2,
                       borderRadius: '50%',
-                      backgroundColor: 'primary.main',
-                      color: 'white',
+                      backgroundColor: colors.primaryAccent,
+                      color: colors.primaryText,
                       mb: 2,
                     }}
                   >
@@ -285,8 +286,8 @@ export default function Contact() {
                       display: 'inline-flex',
                       p: 2,
                       borderRadius: '50%',
-                      backgroundColor: 'primary.main',
-                      color: 'white',
+                      backgroundColor: colors.primaryAccent,
+                      color: colors.primaryText,
                       mb: 2,
                     }}
                   >
@@ -312,8 +313,8 @@ export default function Contact() {
                       display: 'inline-flex',
                       p: 2,
                       borderRadius: '50%',
-                      backgroundColor: 'primary.main',
-                      color: 'white',
+                      backgroundColor: colors.primaryAccent,
+                      color: colors.primaryText,
                       mb: 2,
                     }}
                   >

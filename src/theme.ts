@@ -1,26 +1,53 @@
 import { createTheme } from '@mui/material/styles';
 
+// Centralized color system
+const colors = {
+  // New dark design system with blue header and pink accents
+  pageBackground: '#0E0E10',
+  cardSurface: '#1A1A1E',
+  headerBackground: '#1976d2', // Blue header
+  primaryText: '#F2F2F0',
+  mutedText: 'rgba(242, 242, 240, 0.6)',
+  primaryAccent: '#1976d2', // Blue primary
+  secondaryAccent: '#E91E63', // Pink accent for highlights/underlines
+  border: 'rgba(255, 255, 255, 0.06)',
+} as const;
+
 export const theme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
-      main: '#0ea5e9', // Sky blue - powder coating theme
-      light: '#38bdf8',
-      dark: '#0284c7',
-      contrastText: '#ffffff',
+      main: colors.primaryAccent,
+      light: '#42a5f5',
+      dark: '#1565c0',
+      contrastText: colors.primaryText,
     },
     secondary: {
-      main: '#64748b', // Slate gray
-      light: '#94a3b8',
-      dark: '#475569',
-      contrastText: '#ffffff',
+      main: colors.secondaryAccent,
+      light: '#F06292',
+      dark: '#C2185B',
+      contrastText: colors.primaryText,
     },
     background: {
-      default: '#ffffff',
-      paper: '#f8fafc',
+      default: colors.pageBackground,
+      paper: colors.cardSurface,
     },
     text: {
-      primary: '#1e293b',
-      secondary: '#64748b',
+      primary: colors.primaryText,
+      secondary: colors.mutedText,
+    },
+    divider: colors.border,
+    grey: {
+      50: colors.cardSurface,
+      100: colors.cardSurface,
+      200: colors.cardSurface,
+      300: colors.border,
+      400: colors.mutedText,
+      500: colors.mutedText,
+      600: colors.mutedText,
+      700: colors.cardSurface,
+      800: colors.cardSurface,
+      900: colors.pageBackground,
     },
   },
   typography: {
@@ -29,39 +56,47 @@ export const theme = createTheme({
       fontSize: '2.5rem',
       fontWeight: 700,
       lineHeight: 1.2,
+      color: colors.primaryText,
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 600,
       lineHeight: 1.3,
+      color: colors.primaryText,
     },
     h3: {
       fontSize: '1.5rem',
       fontWeight: 600,
       lineHeight: 1.4,
+      color: colors.primaryText,
     },
     h4: {
       fontSize: '1.25rem',
       fontWeight: 600,
       lineHeight: 1.4,
+      color: colors.primaryText,
     },
     h5: {
       fontSize: '1.125rem',
       fontWeight: 600,
       lineHeight: 1.4,
+      color: colors.primaryText,
     },
     h6: {
       fontSize: '1rem',
       fontWeight: 600,
       lineHeight: 1.4,
+      color: colors.primaryText,
     },
     body1: {
       fontSize: '1rem',
       lineHeight: 1.6,
+      color: colors.primaryText,
     },
     body2: {
       fontSize: '0.875rem',
       lineHeight: 1.6,
+      color: colors.mutedText,
     },
   },
   shape: {
@@ -80,6 +115,21 @@ export const theme = createTheme({
           padding: '12px 32px',
           fontSize: '1rem',
         },
+        contained: {
+          backgroundColor: colors.primaryAccent,
+          color: colors.primaryText,
+          '&:hover': {
+            backgroundColor: colors.secondaryAccent,
+          },
+        },
+        outlined: {
+          borderColor: colors.border,
+          color: colors.primaryText,
+          '&:hover': {
+            borderColor: colors.primaryAccent,
+            backgroundColor: 'rgba(58, 123, 213, 0.1)',
+          },
+        },
       },
     },
     MuiTextField: {
@@ -90,6 +140,25 @@ export const theme = createTheme({
         root: {
           '& .MuiOutlinedInput-root': {
             borderRadius: 8,
+            backgroundColor: colors.cardSurface,
+            '& fieldset': {
+              borderColor: colors.border,
+            },
+            '&:hover fieldset': {
+              borderColor: colors.primaryAccent,
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: colors.primaryAccent,
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: colors.mutedText,
+            '&.Mui-focused': {
+              color: colors.primaryAccent,
+            },
+          },
+          '& .MuiInputBase-input': {
+            color: colors.primaryText,
           },
         },
       },
@@ -98,9 +167,37 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 12,
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+          backgroundColor: colors.cardSurface,
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          borderColor: colors.border,
+          boxShadow: 'none',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.cardSurface,
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.cardSurface,
+          borderBottom: `1px solid ${colors.border}`,
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: colors.border,
         },
       },
     },
   },
 });
+
+export { colors };

@@ -10,6 +10,7 @@ import {
   Security,
   Nature,
 } from '@mui/icons-material';
+import { colors } from '../../theme';
 
 interface Feature {
   title: string;
@@ -56,8 +57,8 @@ const FeatureCard = ({ feature }: FeatureCardProps) => {
             display: 'inline-flex',
             p: 2,
             borderRadius: '50%',
-            backgroundColor: 'primary.main',
-            color: 'white',
+            backgroundColor: colors.primaryAccent,
+            color: colors.primaryText,
             mb: 2,
           }}
         >
